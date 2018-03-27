@@ -11,7 +11,7 @@
     "test": "jest",
     "clean": "rimraf dist/**/*",
     "clean-build": "npm run clean && npm run build",
-    "prepublish": "npm run clean-build"
+    "preinstall": "npm run clean-build"
   },
   "files": [
     "dist"
