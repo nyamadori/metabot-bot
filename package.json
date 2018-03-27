@@ -1,0 +1,30 @@
+{
+  "name": "metabot-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:nyamadori/metabot-bot.git",
+  "author": "nyamadori <nyamadorig@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "tslint 'src/**/*.ts' '__tests__/**/*.ts'",
+    "build": "tsc",
+    "test": "jest",
+    "clean": "rimraf dist/**/*",
+    "clean-build": "npm run clean && npm run build",
+    "prepublish": "npm run clean-build"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.2",
+    "@types/yargs": "^11.0.0",
+    "jest": "^22.4.3",
+    "prettier": "^1.11.1",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^22.4.2",
+    "ts-node": "^5.0.1",
+    "tslint-plugin-prettier": "^1.3.0",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "yargs": "^11.0.0"
+  }
+}
