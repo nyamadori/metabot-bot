@@ -13,6 +13,9 @@
     "clean-build": "npm run clean && npm run build",
     "prepublish": "npm run clean-build"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/jest": "^22.2.2",
     "@types/yargs": "^11.0.0",
