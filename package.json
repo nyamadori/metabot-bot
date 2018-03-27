@@ -5,6 +5,8 @@
   "repository": "git@github.com:nyamadori/metabot-bot.git",
   "author": "nyamadori <nyamadorig@gmail.com>",
   "license": "MIT",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "lint": "tslint 'src/**/*.ts' '__tests__/**/*.ts'",
     "build": "tsc",
