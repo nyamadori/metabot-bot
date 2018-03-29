@@ -10,13 +10,11 @@ export class BotExector {
     this.definition = definition
   }
 
-  execute(context: BotContext): Promise<any> {
+  execute(command: string | string[], context: BotContext): Promise<any> {
     return new Promise((resolve, reject) => {
-      const messageText = context.message['text']
-
-      this.yargs().parse(messageText, (err, parsedArgs, output) => {
+      this.yargs().parse(command, (err, parsedArgs, output) => {
         if (err || output) {
-          return resolve(this.buildMessageForCmdHelp(messageText, output))
+          return resolve(this.buildMessageForCmdHelp(command, output))
         }
 
         const commandPath = parsedArgs._

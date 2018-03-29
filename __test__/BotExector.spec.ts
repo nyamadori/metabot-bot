@@ -1,10 +1,10 @@
-import BotExector from '../src/BotExector'
+import { BotExector } from '../src/BotExector'
 
 describe('BotExector', () => {
   describe('#execute', () => {
     it('returns Promise object', () => {
       const exector = new BotExector({ commands: {} })
-      expect(exector.execute({ message: { text: 'cmd' } })).toBeInstanceOf(Promise)
+      expect(exector.execute('cmd', { message: { text: 'cmd' } })).toBeInstanceOf(Promise)
     })
 
     it('calls handler of matched command and returns message', async () => {
@@ -20,7 +20,7 @@ describe('BotExector', () => {
         }
       })
 
-      const result = await exector.execute({ message: { text: 'echo hello' } })
+      const result = await exector.execute('echo hello', { message: { text: 'echo hello' } })
 
       expect(result).toEqual({ msg: 'hello' })
     })
@@ -38,7 +38,7 @@ describe('BotExector', () => {
         }
       })
 
-      const result = await exector.execute({ message: { text: 'echo --help' } })
+      const result = await exector.execute('echo --help', { message: { text: 'echo --help' } })
 
       expect(result['attachments'][0]['text']).toMatch(/.*--help.*/)
     })
