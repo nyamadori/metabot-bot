@@ -1,6 +1,6 @@
 import { SlashCommand } from './slack'
 
-export class CommandEnvironment {
+export interface CommandEnvironment {
   message: SlashCommand
   brain: any
 }
