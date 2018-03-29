@@ -36,8 +36,8 @@ export class BotExector {
     let currentCommand: CommandDefinition = commands['root']
 
     commandPath.slice(1).forEach((cmd) => {
-      currentCommand = commands[cmd]
       commands = currentCommand.subcommands
+      currentCommand = commands[cmd]
     })
 
     return currentCommand

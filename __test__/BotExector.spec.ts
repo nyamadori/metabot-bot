@@ -62,5 +62,44 @@ describe('BotExector', () => {
 
       expect(result).toEqual({ msg: 'hello' })
     })
+
+    it('calls subcommand', async () => {
+      const exector = new BotExector({
+        commands: {
+          root: {
+            command: '%{botNickname} <command> [args..]',
+            desc: 'command',
+            handler: async ({ args }) => { /*nop*/ },
+            subcommands: {
+              status: {
+                command: 'status <text>',
+                desc: 'shows status',
+                handler: async ({ args }) => {
+                  return { msg: args['text'] }
+                }
+              },
+
+              remote: {
+                command: 'remote <url>',
+                desc: 'set remote url',
+                handler: async ({ args }) => {
+                  return { msg: args['url'] }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      const botNickname = `cmd-${Math.ceil(Math.random() * 100)}`
+
+      const cmd1 = [botNickname, 'status', 'hello']
+      const result1 = await exector.execute(cmd1, { message: { text: cmd1.join(' ') } })
+      expect(result1).toEqual({ msg: 'hello' })
+
+      const cmd2 = [botNickname, 'remote', 'url']
+      const result2 = await exector.execute(cmd2, { message: { text: cmd2.join(' ') } })
+      expect(result2).toEqual({ msg: 'url' })
+    })
   })
 })
