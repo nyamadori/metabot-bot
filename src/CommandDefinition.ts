@@ -1,7 +1,7 @@
 import * as yargs from 'yargs'
-import BotContext from './BotContext'
+import { BotContext } from './BotContext'
 
-export default interface CommandDefinition {
+export interface CommandDefinition {
   command: string,
   desc: string,
   handler({ args, context }: { args: {}; context: BotContext }): Promise<any>,

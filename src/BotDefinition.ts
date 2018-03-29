@@ -1,5 +1,5 @@
-import CommandDefinition from './CommandDefinition'
+import { CommandDefinition } from './CommandDefinition'
 
-export default interface BotDefinition {
+export interface BotDefinition {
   commands: { [key: string]: CommandDefinition }
 }

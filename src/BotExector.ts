@@ -1,9 +1,9 @@
 import * as yargs from 'yargs'
-import BotDefinition from './BotDefinition'
-import BotContext from './BotContext'
-import CommandDefinition from './CommandDefinition'
+import { BotDefinition } from './BotDefinition'
+import { BotContext } from './BotContext'
+import { CommandDefinition } from './CommandDefinition'
 
-export default class Exector {
+export class BotExector {
   private definition: BotDefinition
 
   constructor(definition: BotDefinition) {

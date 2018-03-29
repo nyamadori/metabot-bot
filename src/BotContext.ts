@@ -1,4 +1,4 @@
-export default interface BotContext {
+export interface BotContext {
   /**
    * Slack message object
    */
