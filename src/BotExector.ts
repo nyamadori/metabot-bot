@@ -16,7 +16,7 @@ export class BotExector {
     return new Promise((resolve, reject) => {
       this.yargs(rootCommand).parse(command, (err, parsedArgs, output) => {
         if (err || output) {
-          return resolve(this.buildMessageForCmdHelp(rootCommand, command, output))
+          return resolve(this.buildMessageForCmdHelp(command, output))
         }
 
         const commandPath = parsedArgs._
@@ -93,9 +93,9 @@ export class BotExector {
     return base
   }
 
-  private buildMessageForCmdHelp(rootCommand, restCommand, message) {
+  private buildMessageForCmdHelp(command, message) {
     return {
-      text: `${rootCommand} ${restCommand}`,
+      text: `${command}`,
       attachments: [
         {
           text: "```" + message + "```"
