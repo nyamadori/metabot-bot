@@ -10,11 +10,14 @@ export class BotExector {
     this.definition = definition
   }
 
-  execute(command: string | string[], context: BotContext): Promise<any> {
+  execute(command: string[], context: BotContext): Promise<any> {
+    const cmdStr = command.join(' ')
+    const rootCommand = command[0]
+
     return new Promise((resolve, reject) => {
-      this.yargs().parse(command, (err, parsedArgs, output) => {
+      this.yargs(rootCommand).parse(cmdStr, (err, parsedArgs, output) => {
         if (err || output) {
-          return resolve(this.buildMessageForCmdHelp(command, output))
+          return resolve(this.buildMessageForCmdHelp(rootCommand, cmdStr, output))
         }
 
         const commandPath = parsedArgs._
@@ -30,9 +33,9 @@ export class BotExector {
 
   private commandDefinitionFrom(commandPath: string[]) {
     var commands = this.definition.commands
-    let currentCommand: CommandDefinition = null
+    let currentCommand: CommandDefinition = commands['root']
 
-    commandPath.forEach((cmd) => {
+    commandPath.slice(1).forEach((cmd) => {
       currentCommand = commands[cmd]
       commands = currentCommand.subcommands
     })
@@ -40,14 +43,16 @@ export class BotExector {
     return currentCommand
   }
 
-  private toYargsCommandModule(def: CommandDefinition) {
+  private toYargsCommandModule(rootCommand: string, def: CommandDefinition) {
+    const command = def.command.replace('%{botNickname}', rootCommand)
+
     const commandModule: yargs.CommandModule = {
       describe: def.desc,
-      command: def.command,
+      command: command,
       builder: (yargs) => {
         if (def.subcommands) {
           Object.keys(def.subcommands).forEach((cmd) => {
-            yargs.command(this.toYargsCommandModule(def.subcommands[cmd]))
+            yargs.command(this.toYargsCommandModule(rootCommand, def.subcommands[cmd]))
           })
         }
 
@@ -71,7 +76,7 @@ export class BotExector {
     return commandModule
   }
 
-  private yargs() {
+  private yargs(rootCommand: string) {
     const base =
       yargs
         .strict()
@@ -82,16 +87,16 @@ export class BotExector {
         .wrap(72)
 
     Object.keys(this.definition.commands).forEach((cmd) => {
-      const cmdDef = this.toYargsCommandModule(this.definition.commands[cmd])
+      const cmdDef = this.toYargsCommandModule(rootCommand, this.definition.commands[cmd])
       base.command(cmdDef)
     })
 
     return base
   }
 
-  private buildMessageForCmdHelp(cmd, message) {
+  private buildMessageForCmdHelp(rootCommand, restCommand, message) {
     return {
-      text: `/meta ${cmd}`,
+      text: `${rootCommand} ${restCommand}`,
       attachments: [
         {
           text: "```" + message + "```"

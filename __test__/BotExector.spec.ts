@@ -4,13 +4,13 @@ describe('BotExector', () => {
   describe('#execute', () => {
     it('returns Promise object', () => {
       const exector = new BotExector({ commands: {} })
-      expect(exector.execute('cmd', { message: { text: 'cmd' } })).toBeInstanceOf(Promise)
+      expect(exector.execute(['cmd'], { message: { text: 'cmd' } })).toBeInstanceOf(Promise)
     })
 
     it('calls handler of matched command and returns message', async () => {
       const exector = new BotExector({
         commands: {
-          echo: {
+          root: {
             command: 'echo <msg>',
             desc: 'echos your message',
             handler: async ({ args }) => {
@@ -20,7 +20,7 @@ describe('BotExector', () => {
         }
       })
 
-      const result = await exector.execute('echo hello', { message: { text: 'echo hello' } })
+      const result = await exector.execute(['echo', 'hello'], { message: { text: 'echo hello' } })
 
       expect(result).toEqual({ msg: 'hello' })
     })
@@ -28,7 +28,7 @@ describe('BotExector', () => {
     it('returns help message when given `--help`', async () => {
       const exector = new BotExector({
         commands: {
-          echo: {
+          root: {
             command: 'echo <msg>',
             desc: 'echos your message',
             handler: async ({ args }) => {
@@ -38,9 +38,29 @@ describe('BotExector', () => {
         }
       })
 
-      const result = await exector.execute('echo --help', { message: { text: 'echo --help' } })
+      const result = await exector.execute(['echo', '--help'], { message: { text: 'echo --help' } })
 
       expect(result['attachments'][0]['text']).toMatch(/.*--help.*/)
+    })
+
+    it('calls handler with botNickname', async () => {
+      const exector = new BotExector({
+        commands: {
+          root: {
+            command: '%{botNickname} <msg>',
+            desc: 'echos your message',
+            handler: async ({ args }) => {
+              return { msg: args['msg'] }
+            }
+          }
+        }
+      })
+
+      const botNickname = `echo-${Math.ceil(Math.random() * 100)}`
+      const msgText = `${botNickname} hello`
+      const result = await exector.execute([botNickname, 'hello'], { message: { text: msgText } })
+
+      expect(result).toEqual({ msg: 'hello' })
     })
   })
 })
