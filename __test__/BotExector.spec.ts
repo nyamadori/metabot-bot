@@ -4,7 +4,7 @@ describe('BotExector', () => {
   describe('#execute', () => {
     it('returns Promise object', () => {
       const exector = new BotExector({ commands: {} })
-      expect(exector.execute(['cmd'], { message: { text: 'cmd' } })).toBeInstanceOf(Promise)
+      expect(exector.execute('cmd', { message: { text: 'cmd' } })).toBeInstanceOf(Promise)
     })
 
     it('calls handler of matched command and returns message', async () => {
@@ -20,7 +20,7 @@ describe('BotExector', () => {
         }
       })
 
-      const result = await exector.execute(['echo', 'hello'], { message: { text: 'echo hello' } })
+      const result = await exector.execute('echo hello', { message: { text: 'echo hello' } })
 
       expect(result).toEqual({ msg: 'hello' })
     })
@@ -38,7 +38,7 @@ describe('BotExector', () => {
         }
       })
 
-      const result = await exector.execute(['echo', '--help'], { message: { text: 'echo --help' } })
+      const result = await exector.execute('echo --help', { message: { text: 'echo --help' } })
 
       expect(result['attachments'][0]['text']).toMatch(/.*--help.*/)
     })
@@ -58,7 +58,7 @@ describe('BotExector', () => {
 
       const botNickname = `echo-${Math.ceil(Math.random() * 100)}`
       const msgText = `${botNickname} hello`
-      const result = await exector.execute([botNickname, 'hello'], { message: { text: msgText } })
+      const result = await exector.execute('botNickname, hello', { message: { text: msgText } })
 
       expect(result).toEqual({ msg: 'hello' })
     })
@@ -93,12 +93,12 @@ describe('BotExector', () => {
 
       const botNickname = `cmd-${Math.ceil(Math.random() * 100)}`
 
-      const cmd1 = [botNickname, 'status', 'hello']
-      const result1 = await exector.execute(cmd1, { message: { text: cmd1.join(' ') } })
+      const cmd1 = `${botNickname} status hello`
+      const result1 = await exector.execute(cmd1, { message: { text: cmd1 } })
       expect(result1).toEqual({ msg: 'hello' })
 
-      const cmd2 = [botNickname, 'remote', 'url']
-      const result2 = await exector.execute(cmd2, { message: { text: cmd2.join(' ') } })
+      const cmd2 = `${botNickname} remote url`
+      const result2 = await exector.execute(cmd2, { message: { text: cmd2 } })
       expect(result2).toEqual({ msg: 'url' })
     })
   })
