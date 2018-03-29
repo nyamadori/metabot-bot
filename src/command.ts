@@ -91,14 +91,20 @@ export class Parser {
 
 }
 
-export class CommandBase {
+export interface ICommand {
+  execute(env: CommandEnvironment): Promise<any>
+}
+
+export class CommandBase implements ICommand {
   constructor(args: {}) {
     Object.keys(args).forEach((key) => {
       this[key] = args[key]
     })
   }
 
-  async execute(env: CommandEnvironment) { }
+  execute(env: CommandEnvironment): Promise<any> {
+    return null
+  }
 
   static command: string
   static description: string

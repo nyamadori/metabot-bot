@@ -1,7 +1,7 @@
 import { Command, CommandBase, SubCommand, Positional, Option, Parser, DefaultHelpCommand } from '../src/command'
 
 describe('Parser', () => {
-  @Command('invite <botName>', 'Invite a bot')
+  @Command('invite <botName> [args..]', 'Invite a bot')
   class InviteCommand extends CommandBase {
     @Positional('botname')
     botName: string
@@ -21,7 +21,7 @@ describe('Parser', () => {
 
   describe('#parse', () => {
     it('returns InviteCommand object', () => {
-      const cmd = <InviteCommand>parser.parse(['metabot', 'invite', 'hoge'])
+      const cmd = <InviteCommand>parser.parse(['metabot', 'invite', 'hoge', 'hoo', 'bar'])
 
       expect(cmd).toBeInstanceOf(InviteCommand)
       expect(cmd.botName).toEqual('hoge')
