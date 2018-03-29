@@ -10,8 +10,8 @@ export class BotExector {
     this.definition = definition
   }
 
-  execute(command: string[], context: BotContext): Promise<any> {
-    const cmdStr = command.join(' ')
+  execute(command: string[] | string, context: BotContext): Promise<any> {
+    const cmdStr = typeof command === 'string' ? command : command.join(' ')
     const rootCommand = command[0]
 
     return new Promise((resolve, reject) => {
