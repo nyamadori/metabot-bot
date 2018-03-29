@@ -1,6 +1,6 @@
+import { firestore } from 'firebase'
+
 export interface BotContext {
-  /**
-   * Slack message object
-   */
-  message: {}
+  message: {},
+  brainSnapshot?: firestore.DocumentSnapshot
 }
